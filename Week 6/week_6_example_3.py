@@ -9,6 +9,7 @@ example of auoregressive with exogenous input (ARX) model
 
 """
 
+n = 8 # Number of time steps
 
 # Generate synthetic data for ARX model
 def generate_arx_data(steps=1000):
@@ -26,7 +27,7 @@ def generate_arx_data(steps=1000):
 class LinearARXModel(nn.Module):
     def __init__(self):
         super(LinearARXModel, self).__init__()
-        self.linear = nn.Linear(2, 1)  # Two inputs: y(t-1), u(t-1)
+        self.linear = nn.Linear(n*2, 1)  # Two inputs: y(t-1), u(t-1)
 
     def forward(self, x):
         return self.linear(x)
@@ -35,9 +36,14 @@ class LinearARXModel(nn.Module):
 # Generate data
 u, y = generate_arx_data()
 
+y_n_list = [y[i:-n+i] for i in range(n)]
+y_features =  torch.cat(y_n_list, dim=1)
+u_n_list = [u[i:-n+i] for i in range(n)]
+u_features =  torch.cat(u_n_list, dim=1)
+
 # Prepare training data
-X_train = torch.cat((y[:-1], u[:-1]), dim=1)
-y_train = y[1:]
+X_train = torch.cat((y_features, u_features), dim=1)
+y_train = y[n:]
 
 # Initialize and train the model
 model = LinearARXModel()

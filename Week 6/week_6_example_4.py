@@ -20,7 +20,7 @@ def generate_linear_state_space_data(steps=1000):
 
     for t in range(1, steps):
         x[t] = A_true @ x[t - 1] + B_true @ u[t - 1] + 0.01 * np.random.randn(2)  # Process noise
-        y[t] = C_true @ x[t] + D_true @ u[t] + 0.01 * np.random.randn(1)  # Measurement noise
+        y[t] = C_true @ x[t] + D_true @ u[t] + 0.1 * np.random.randn(1)  # Measurement noise
 
     return u, y, x
 
