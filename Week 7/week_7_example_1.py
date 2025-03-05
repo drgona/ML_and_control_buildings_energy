@@ -25,6 +25,7 @@ def penalty_method(initial_x, r_init=1, tol=1e-6, max_iter=50):
 
         # Perform gradient descent step
         step_size = 0.1 / r  # Decreasing step size as penalty increases
+        # step_size = 0.0001
         x -= step_size * grad_x
 
         update_path.append(x.copy())
@@ -39,7 +40,7 @@ def penalty_method(initial_x, r_init=1, tol=1e-6, max_iter=50):
     return x, update_path
 
 # Solve using the Penalty Method
-initial_x = [0, 0]  # Initial guess
+initial_x = [-0.50, 1.0]  # Initial guess
 solution_x, update_path = penalty_method(initial_x)
 
 # Convert update path to lists for visualization

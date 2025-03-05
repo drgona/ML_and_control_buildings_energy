@@ -8,9 +8,11 @@ https://www.cvxpy.org/
 """
 
 # Problem data.
-m = 30
-n = 20
+m = 30   #  number of constaints
+n = 20   # number of variables
 np.random.seed(1)
+
+#  constraints parameters Ax <= b
 A = np.random.randn(m, n)
 b = np.random.randn(m)
 
@@ -21,7 +23,7 @@ constraints = [0 <= x, x <= 1]
 prob = cp.Problem(objective, constraints)
 
 # The optimal objective value is returned by `prob.solve()`.
-result = prob.solve()
+result = prob.solve(solver='OSQP')
 # The optimal value for x is stored in `x.value`.
 print(x.value)
 # The optimal Lagrange multiplier for a constraint is stored in
