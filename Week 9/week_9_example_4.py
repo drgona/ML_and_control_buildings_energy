@@ -70,6 +70,7 @@ x_k = x_init
 constraints = []
 
 for k in range(N):
+    d_k = d_param[:, k]  # get the disturbance for this time step
     # output model
     y_k = C @ x_k
     # penalty on control actions - economic MPC objective
@@ -81,7 +82,7 @@ for k in range(N):
     # input constraints
     constraints += [umin <= u[:, k], u[:, k] <= umax]
     # Dynamics
-    x_k = A @ x_k + B @ u[:, k]
+    x_k = A @ x_k + B @ u[:, k] + E @ d_k
 
 
 # Define problem
