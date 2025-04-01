@@ -44,6 +44,8 @@ h2_history = []
 q_in_history = []
 ref_history = []
 
+
+
 # Run NMPC in closed-loop simulation
 for t in time_sim:
     # CasADi optimization setup
