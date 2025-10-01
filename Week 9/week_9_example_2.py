@@ -66,7 +66,7 @@ prob = Problem(Minimize(objective), constraints)
 
 # Closed-loop simulation
 nsim = 30
-x_log, y_log, u_log = [x0], [C @ x0], []
+x_log, y_log, u_log = [x0], [(C @ x0).item()], []
 
 for i in range(nsim):
     x_init.value = x0

@@ -59,9 +59,8 @@ d_sequence[2, :] = 500 * np.clip(np.sin(np.linspace(0, 4*np.pi, nsim + N)), 0, 1
 
 
 # Logs
-x_log = [x0]
-y_log = [C @ x0]
-u_log = []
+x_log, y_log, u_log = [x0], [(C @ x0).item()], []
+
 
 # MPPI loop in closed-loop simulation
 x = x0.copy()

@@ -2,15 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from cvxpy import *
 
-"""
-Linear MPC of a simple building thermal model
-
-Reference tracking formulation 
-dynamics constraints given in a dense form (single shooting)
-
-"""
-
-
 # System dynamics
 A = np.array([[0.9950, 0.0017, 0.0000, 0.0031],
               [0.0007, 0.9957, 0.0003, 0.0031],
@@ -49,25 +40,24 @@ x_k = x_init
 constraints = []
 
 for k in range(N):
-    # output model
     y_k = C @ x_k
-    # reference tracking objective
-    objective += Qy * quad_form(y_k - y_ref, np.eye(ny)) + quad_form(u[:, k], R)
+    # reference tracking objective (optional: sum_squares instead of quad_form with I)
+    objective += Qy * sum_squares(y_k - y_ref) + quad_form(u[:, k], R)
     # input constraints
     constraints += [umin <= u[:, k], u[:, k] <= umax]
-    # Dynamics
+    # dynamics rollout
     x_k = A @ x_k + B @ u[:, k]
 
 # Terminal cost
 y_k = C @ x_k
-objective += QN * quad_form(y_k - y_ref, np.eye(ny))
+objective += QN * sum_squares(y_k - y_ref)
 
 # Define problem
 prob = Problem(Minimize(objective), constraints)
 
 # Closed-loop simulation
 nsim = 30
-x_log, y_log, u_log = [x0], [C @ x0], []
+x_log, y_log, u_log = [x0], [(C @ x0).item()], []
 
 for i in range(nsim):
     x_init.value = x0

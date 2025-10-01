@@ -89,9 +89,8 @@ for k in range(N):
 prob = Problem(Minimize(objective), constraints)
 
 # Closed-loop simulation
-x_log = [x0]
-y_log = [C @ x0]
-u_log = []
+x_log, y_log, u_log = [x0], [(C @ x0).item()], []
+
 
 for i in range(nsim):
     x_init.value = x0
